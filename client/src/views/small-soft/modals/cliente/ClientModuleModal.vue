@@ -1,5 +1,26 @@
 <script setup>
+import { usePuntoVentaStore } from '@/store/puntoVentaStore';
+
 const isDialogVisible = ref(false)
+const puntoVentaStore = usePuntoVentaStore();
+
+watch(
+  () => [puntoVentaStore.modalModuleCliente],
+  async ([value]) => {
+    console.log(value);
+    isDialogVisible.value = value
+  },
+  { immediate: true }
+);
+
+
+watch(isDialogVisible, async (newValue) => {
+  // console.log(newValue);
+  if (!newValue) {
+    puntoVentaStore.modalModuleCliente = newValue;
+  }
+});
+
 </script>
 
 <template>

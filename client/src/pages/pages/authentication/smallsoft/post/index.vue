@@ -1,7 +1,13 @@
 <script setup>
 import { usePuntoVentaStore } from "@/store/puntoVentaStore";
 import AuthProvider from "@/views/pages/authentication/AuthProvider.vue";
+import AjustesModuleModal from "@/views/small-soft/modals/ajustes/AjustesModuleModal.vue";
 import ClientModuleModal from "@/views/small-soft/modals/cliente/ClientModuleModal.vue";
+import CortesModuleModal from "@/views/small-soft/modals/cortes/CortesModuleModal.vue";
+import InventoryModuleModal from "@/views/small-soft/modals/inventario/InventoryModuleModal.vue";
+import KardexModuleModal from "@/views/small-soft/modals/kardex/KardexModuleModal.vue";
+import ProductModuleModal from "@/views/small-soft/modals/producto/ProductModuleModal.vue";
+import ReportesModuleModal from "@/views/small-soft/modals/reportes/ReportesModuleModal.vue";
 
 
 definePage({
@@ -54,34 +60,65 @@ const modalCliente = ()=>{
   puntoVentaStore.modalModuleCliente = true
 }
 
-const toggleExclusive = ref(1);
+const modalProducto = ()=>{
+  puntoVentaStore.modalModuleProducto = true
+}
 
-const isPasswordVisible = ref(false);
+const modalInventario = ()=>{
+  puntoVentaStore.modalModuleInventario = true
+}
+
+const modalKardex = ()=>{
+  puntoVentaStore.modalModuleKardex = true
+}
+
+const modalCorte = ()=>{
+  puntoVentaStore.modalModuleCortes = true
+}
+
+const modalReportes = ()=>{
+  puntoVentaStore.modalModuleReportes = true
+}
+
+
+const modalAjustes = ()=>{
+  puntoVentaStore.modalModuleAjustes = true
+}
+
+
+
+const handleKeyPress = (event) => {
+  event.preventDefault(); // <--- Esta línea evita la acción por defecto
+  if (event.keyCode === 112) { // El código para F1 es 112
+     modalCliente();
+  }
+};
+
 </script>
 
 <template>
-  <div class="ps-2 pe-2" >
+  <div class="ps-2 pe-2" @keydown="handleKeyPress" >
     <VRow no-gutters class="mt-2 mb-2">
       <VCol cols="11">
         <VBtn @click="modalCliente" color="secondary" size="small">
           <VIcon start icon="bx-male" />Clientes [F1]
         </VBtn>
-        <VBtn color="secondary" class="ms-2" size="small">
+        <VBtn @click="modalProducto" color="secondary" class="ms-2" size="small">
           <VIcon start icon="bx-cabinet" />Productos [F2]
         </VBtn>
-        <VBtn color="secondary" class="ms-2" size="small">
+        <VBtn @click="modalInventario"  color="secondary" class="ms-2" size="small">
           <VIcon start icon="bx-package" />Inventario [F3]
         </VBtn>
-        <VBtn color="secondary" class="ms-2" size="small">
+        <VBtn @click="modalKardex" color="secondary" class="ms-2" size="small">
           <VIcon start icon="bx-receipt" />Kardex [F4]
         </VBtn>
-        <VBtn color="secondary" class="ms-2" size="small">
+        <VBtn  @click="modalCorte" color="secondary" class="ms-2" size="small">
           <VIcon start icon="bx-unlink" />Corte [F5]
         </VBtn>
-        <VBtn color="secondary" class="ms-2" size="small">
+        <VBtn @click="modalReportes"  color="secondary" class="ms-2" size="small">
           <VIcon start icon="bx-money-withdraw" />Reportes [F6]
         </VBtn>
-        <VBtn color="secondary" class="ms-2" size="small">
+        <VBtn @click="modalAjustes" color="secondary" class="ms-2" size="small">
           <VIcon start icon="bx-credit-card-front" />Ajustes [F7]
         </VBtn>
       </VCol>
@@ -92,7 +129,7 @@ const isPasswordVisible = ref(false);
         </VBtn>
       </VCol>
     </VRow>
-    <VCard height="100%">
+    <VCard :loading="false" height="100%">
       <VCardText
         class="d-flex align-center flex-wrap text-body-1 pt-2 pb-2 px-3"
       >
@@ -367,6 +404,12 @@ const isPasswordVisible = ref(false);
     </VCard>
     
   <ClientModuleModal />
+  <ProductModuleModal />
+  <InventoryModuleModal />
+  <KardexModuleModal />
+  <CortesModuleModal/>
+  <AjustesModuleModal/>
+  <ReportesModuleModal/>
   </div>
 </template>
 

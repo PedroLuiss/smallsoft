@@ -60,37 +60,22 @@ const selectedOptions = [
 
 // headers
 const headers = [
+  
   {
-    title: "Nombre",
-    key: "fullName",
-  },
-  {
-    title: "Tipo Doc.",
+    title: "Código",
     key: "email",
   },
   {
-    title: "Numero Doc.",
+    title: "Producto",
     key: "startDate",
   },
   {
-    title: "Email",
+    title: "Categoria",
     key: "salary",
   },
   {
-    title: "Dirección",
+    title: "Cantidad",
     key: "age",
-  },
-  {
-    title: "Teléfono",
-    key: "age",
-  },
-  {
-    title: "Deuda",
-    key: "age",
-  },
-  {
-    title: "Estado",
-    key: "status",
   },
   {
     title: "Acciones",
@@ -171,7 +156,7 @@ onMounted(() => {
 });
 
 watch(
-  () => [puntoVentaStore.modalModuleCliente],
+  () => [puntoVentaStore.modalModuleInventario],
   async ([value]) => {
     console.log(value);
     isDialogVisible.value = value;
@@ -182,7 +167,7 @@ watch(
 watch(isDialogVisible, async (newValue) => {
   // console.log(newValue);
   if (!newValue) {
-    puntoVentaStore.modalModuleCliente = newValue;
+    puntoVentaStore.modalModuleInventario = newValue;
   }
 });
 </script>
@@ -201,22 +186,25 @@ watch(isDialogVisible, async (newValue) => {
         <VToolbar color="secondary">
           <VToolbarItems>
             <VBtn @click="addCliente" variant="text">
-              <VIcon start icon="bx-male" />Agregar Cliente
+              <VIcon start icon="bx-sitemap" />Entradas Masivas
+            </VBtn>
+            <VBtn @click="addCliente" variant="text">
+              <VIcon start icon="bx-shopping-bag" />Salidas Masivas
+            </VBtn>
+            <VBtn @click="addCliente" variant="text">
+              <VIcon start icon="bx-barcode" />Generar Codigo de Barra
             </VBtn>
             <VBtn variant="text" @click="isDialogVisible = false">
               <VIcon start icon="bx-import"
             /></VBtn>
           </VToolbarItems>
-          <VCardTitle class="text-white"
-            >Deudas por cobrar:
-            <span class="text-secundary">$ 12000</span></VCardTitle
-          >
+          
           <VSpacer />
           <AppTextField
             color="white"
             class="inut-fondo"
             prepend-inner-icon="bx-search-alt-2"
-            placeholder="Buscar Cliente"
+            placeholder="Buscar Producto"
           />
           <VBtn
             icon

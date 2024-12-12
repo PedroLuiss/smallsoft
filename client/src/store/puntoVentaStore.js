@@ -9,7 +9,10 @@ export const usePuntoVentaStore = defineStore('puntoVentaStore', {
     modalModuleKardex: false,
     modalModuleCortes: false,
     modalModuleReportes: false,
-    modalModuleAjustes:false
+    modalModuleAjustes:false,
+    modalOtrosServicios:false,
+    modalEntradasVentas:false,
+    modalSalidasVentas:false
 
   }),
   actions: {

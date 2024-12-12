@@ -4,10 +4,14 @@ import AuthProvider from "@/views/pages/authentication/AuthProvider.vue";
 import AjustesModuleModal from "@/views/small-soft/modals/ajustes/AjustesModuleModal.vue";
 import ClientModuleModal from "@/views/small-soft/modals/cliente/ClientModuleModal.vue";
 import CortesModuleModal from "@/views/small-soft/modals/cortes/CortesModuleModal.vue";
+import EntradasVentasModal from "@/views/small-soft/modals/home/entradas/EntradasVentasModal.vue";
+import OtrosServiciosModal from "@/views/small-soft/modals/home/otros-servicios/OtrosServiciosModal.vue";
+import SalidaVentasModal from "@/views/small-soft/modals/home/salida/SalidaVentasModal.vue";
 import InventoryModuleModal from "@/views/small-soft/modals/inventario/InventoryModuleModal.vue";
 import KardexModuleModal from "@/views/small-soft/modals/kardex/KardexModuleModal.vue";
 import ProductModuleModal from "@/views/small-soft/modals/producto/ProductModuleModal.vue";
 import ReportesModuleModal from "@/views/small-soft/modals/reportes/ReportesModuleModal.vue";
+import { ref } from "vue";
 
 
 definePage({
@@ -22,6 +26,9 @@ const form = ref({
   password: "",
   remember: false,
 });
+
+
+const ClientGeneral = ref(false);
 
 const puntoVentaStore = usePuntoVentaStore();
 
@@ -56,6 +63,7 @@ const purchasedProducts = [
   },
 ]
 
+//-------------------------Abrir modales -------------------------
 const modalCliente = ()=>{
   puntoVentaStore.modalModuleCliente = true
 }
@@ -83,6 +91,23 @@ const modalReportes = ()=>{
 
 const modalAjustes = ()=>{
   puntoVentaStore.modalModuleAjustes = true
+}
+
+const modalOtrosServicio = ()=>{
+  puntoVentaStore.modalOtrosServicios = true
+}
+
+const modalEntradasVentasClick = ()=>{
+  puntoVentaStore.modalEntradasVentas = true
+}
+const modalSalidaVentasClick = ()=>{
+  puntoVentaStore.modalSalidasVentas = true
+}
+//-------------------------End Abrir modales -------------------------
+
+const handlerCLientGeneral = ()=>{
+  console.log(ClientGeneral.value);
+  
 }
 
 
@@ -123,10 +148,12 @@ const handleKeyPress = (event) => {
         </VBtn>
       </VCol>
       <VCol cols="1" class="text-end">
-        <VBtn color="info" size="small">
-          <VIcon start icon="bx-arrow-back" />
-          Salir
-        </VBtn>
+        <RouterLink to="/">
+          <VBtn color="info" size="small">
+            <VIcon start icon="bx-arrow-back" />
+            Salir
+          </VBtn>
+        </RouterLink>
       </VCol>
     </VRow>
     <VCard :loading="false" height="100%">
@@ -137,7 +164,7 @@ const handleKeyPress = (event) => {
         <VDivider vertical class="mx-2" />
         <span class="d-flex align-center"
           >¿Cliente General? [ALT+Q]
-          <VSwitch class="ms-2" color="secondary" />
+          <VSwitch v-model="ClientGeneral" @change="handlerCLientGeneral"  class="ms-2" color="secondary" />
         </span>
         <VDivider vertical class="mx-2" />
         <span>Forma de pago [ALT+W]:</span>
@@ -172,7 +199,7 @@ const handleKeyPress = (event) => {
         </div>
         <VDivider vertical class="mx-2" />
 
-        <div class="d-flex align-center">
+        <div v-if="!ClientGeneral" class="d-flex align-center">
           <span class="h4">Cliente:</span>
           <AppTextField
             class="ms-2"
@@ -183,7 +210,7 @@ const handleKeyPress = (event) => {
           />
         </div>
         
-        <div class="ms-2">
+        <div v-if="!ClientGeneral" class="ms-2">
           <VBtn color="secondary" class="" size="small">
             <VIcon start icon="bx-search-alt-2" />Buscar Cliente [ALT+E]
           </VBtn>
@@ -194,13 +221,13 @@ const handleKeyPress = (event) => {
           <VBtn color="secondary" class="" size="small">
             <VIcon start icon="bx-plus-medical" /> NUEVO [ALT+A]
           </VBtn>
-          <VBtn color="secondary" class="ms-2" size="small">
+          <VBtn @click="modalOtrosServicio" color="secondary" class="ms-2" size="small">
             <VIcon start icon="bx-server" /> OTROS SERVICIOS [ALT+S]
           </VBtn>
-          <VBtn color="secondary" class="ms-2" size="small">
+          <VBtn @click="modalEntradasVentasClick" color="secondary" class="ms-2" size="small">
             <VIcon start icon="bx-basket" /> ENTRADAS [ALT+D]
           </VBtn>
-          <VBtn color="secondary" class="ms-2" size="small">
+          <VBtn @click="modalSalidaVentasClick" color="secondary" class="ms-2" size="small">
             <VIcon start icon="bx-spreadsheet" /> SALIDAS [ALT+F]
           </VBtn>
         </div>
@@ -410,6 +437,13 @@ const handleKeyPress = (event) => {
   <CortesModuleModal/>
   <AjustesModuleModal/>
   <ReportesModuleModal/>
+
+  <OtrosServiciosModal/>
+  <EntradasVentasModal/>
+  <SalidaVentasModal/>
+
+
+
   </div>
 </template>
 

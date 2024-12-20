@@ -76,10 +76,7 @@ watch(isDialogVisible, async (newValue) => {
     content-class="scrollable-dialog"
     persistent
   >
-    <!-- Dialog Activator -->
-    <template #activator="{ props }">
-      <VBtn v-bind="props"> Open Dialog </VBtn>
-    </template>
+    
 
     <!-- Dialog close btn -->
     <DialogCloseBtn @click="isDialogVisible = !isDialogVisible" />

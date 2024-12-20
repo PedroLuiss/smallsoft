@@ -12,7 +12,11 @@ export const usePuntoVentaStore = defineStore('puntoVentaStore', {
     modalModuleAjustes:false,
     modalOtrosServicios:false,
     modalEntradasVentas:false,
-    modalSalidasVentas:false
+    modalSalidasVentas:false,
+    modalHistorialVentas:false,
+    modalBuscarProductos:false,
+    modalBuscarCLientes:false,
+    modalCalculadora:false
 
   }),
   actions: {

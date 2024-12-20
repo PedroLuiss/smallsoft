@@ -4,8 +4,12 @@ import AuthProvider from "@/views/pages/authentication/AuthProvider.vue";
 import AjustesModuleModal from "@/views/small-soft/modals/ajustes/AjustesModuleModal.vue";
 import ClientModuleModal from "@/views/small-soft/modals/cliente/ClientModuleModal.vue";
 import CortesModuleModal from "@/views/small-soft/modals/cortes/CortesModuleModal.vue";
+import HistorialVentasModal from "@/views/small-soft/modals/historial-ventas/HistorialVentasModal.vue";
+import CalculadoraModal from "@/views/small-soft/modals/home/calculadora/CalculadoraModal.vue";
+import BuscarClienteModal from "@/views/small-soft/modals/home/cliente/BuscarClienteModal.vue";
 import EntradasVentasModal from "@/views/small-soft/modals/home/entradas/EntradasVentasModal.vue";
 import OtrosServiciosModal from "@/views/small-soft/modals/home/otros-servicios/OtrosServiciosModal.vue";
+import BuscarProductoModal from "@/views/small-soft/modals/home/producto/BuscarProductoModal.vue";
 import SalidaVentasModal from "@/views/small-soft/modals/home/salida/SalidaVentasModal.vue";
 import InventoryModuleModal from "@/views/small-soft/modals/inventario/InventoryModuleModal.vue";
 import KardexModuleModal from "@/views/small-soft/modals/kardex/KardexModuleModal.vue";
@@ -103,6 +107,23 @@ const modalEntradasVentasClick = ()=>{
 const modalSalidaVentasClick = ()=>{
   puntoVentaStore.modalSalidasVentas = true
 }
+
+const modalHistorialVentas = ()=>{
+  puntoVentaStore.modalHistorialVentas = true
+}
+
+const modalBuscarProducto = ()=>{
+  puntoVentaStore.modalBuscarProductos = true
+}
+
+const modalBuscarCliente = ()=>{
+  
+  puntoVentaStore.modalBuscarCLientes = true
+}
+
+const modalCalculadora = ()=>{
+  puntoVentaStore.modalCalculadora = true
+}
 //-------------------------End Abrir modales -------------------------
 
 const handlerCLientGeneral = ()=>{
@@ -193,7 +214,7 @@ const handleKeyPress = (event) => {
         </div>
         
         <div class="ms-2">
-          <VBtn color="secondary" class="" size="small">
+          <VBtn @click="modalBuscarProducto"  color="secondary" class="" size="small">
             <VIcon start icon="bx-search-alt-2" />Buscar Producto [ALT+L]
           </VBtn>
         </div>
@@ -211,7 +232,7 @@ const handleKeyPress = (event) => {
         </div>
         
         <div v-if="!ClientGeneral" class="ms-2">
-          <VBtn color="secondary" class="" size="small">
+          <VBtn @click="modalBuscarCliente" color="secondary" class="" size="small">
             <VIcon start icon="bx-search-alt-2" />Buscar Cliente [ALT+E]
           </VBtn>
         </div>
@@ -233,7 +254,7 @@ const handleKeyPress = (event) => {
         </div>
         <VDivider vertical class="mx-2" />
         <div>
-          <VBtn size="small" icon="bx-calculator" rounded />
+          <VBtn @click="modalCalculadora" size="small" icon="bx-calculator" rounded />
         </div>
       </VCardText>
 
@@ -340,7 +361,7 @@ const handleKeyPress = (event) => {
         class="d-flex justify-space-between flex-column flex-sm-row print-row mx-2"
       >
         <div class="mb-2 columnas_separadas_debajo">
-            <VBtn color="secondary" height="80%" class="ms-2" >
+            <VBtn @click="modalHistorialVentas" color="secondary" height="80%" class="ms-2" >
               <VIcon start class="icon_btn_opt_rapido" icon="bx-history" />Historial De Ventas [ALt+Z]
             </VBtn>
             <VBtn color="secondary" height="80%"  class="ms-2" >
@@ -441,6 +462,12 @@ const handleKeyPress = (event) => {
   <OtrosServiciosModal/>
   <EntradasVentasModal/>
   <SalidaVentasModal/>
+
+  <HistorialVentasModal/>
+
+  <BuscarProductoModal/>
+  <BuscarClienteModal/>
+  <CalculadoraModal/>
 
 
 

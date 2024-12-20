@@ -198,7 +198,7 @@ watch(isDialogVisible, async (newValue) => {
     <VCard>
       <!-- Toolbar -->
       <div>
-        <VToolbar color="secondary">
+        <VToolbar  color="secondary">
           <VToolbarItems>
             <VBtn @click="addCliente" variant="text">
               <VIcon start icon="bx-male" />Agregar Cliente

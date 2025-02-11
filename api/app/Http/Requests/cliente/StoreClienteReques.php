@@ -26,22 +26,19 @@ class StoreClienteReques extends FormRequest
     {
         $id = $this->id;
         return [
-            'correo' =>
-            [
-                'required',
-                'email',
-                Rule::unique('clientes','correo')->ignore($id,'id')
-            ],
-            'name' =>'required|max:50',
-            'identificacion' =>[
+            // 'correo' =>
+            // [
+            //     'required',
+            //     'email',
+            //     Rule::unique('clientes','correo')->ignore($id,'id')
+            // ],
+            'nombre_apellido' =>'required|max:50',
+            'numero_documento' =>[
                 'required',
                 'max:50',
-                Rule::unique('clientes','identificacion')->ignore($id,'id')
+                Rule::unique('clientes','numero_documento')->ignore($id,'id')
             ],
-            'telefono' => 'required',
-            'person_contact' => 'required',
-            'pais' => 'required|max:100',
-            // 'direccion' => 'required|',
+            'tipo_documento' => 'required'
         ];
     }
 
@@ -53,14 +50,14 @@ class StoreClienteReques extends FormRequest
     public function messages()
     {
         return [
-            'correo.required' => 'El campo email es obligatorio.',
-            'correo.email' => 'El campo email debe ser una dirección de correo válida.',
-            'correo.unique' => 'El campo email ya esta en uso.',
-            'name.required' => 'El campo nombre es obligatorio.',
-            'identificacion.required' => 'El campo identificación es obligatorio.',
-            'telefono.required' => 'El campo teléfono es obligatorio.',
-            'telefono.person_contact' => 'El campo personal de contacto es obligatorio.',
-            'telefono.pais' => 'El campo pais es obligatorio.',
+            // 'correo.required' => 'El campo email es obligatorio.',
+            // 'correo.email' => 'El campo email debe ser una dirección de correo válida.',
+            // 'correo.unique' => 'El campo email ya esta en uso.',
+            // 'name.required' => 'El campo nombre es obligatorio.',
+            // 'identificacion.required' => 'El campo identificación es obligatorio.',
+            // 'telefono.required' => 'El campo teléfono es obligatorio.',
+            // 'telefono.person_contact' => 'El campo personal de contacto es obligatorio.',
+            // 'telefono.pais' => 'El campo pais es obligatorio.',
         ];
     }
 

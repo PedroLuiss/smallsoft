@@ -1,9 +1,12 @@
 <script setup>
+import { deleteCliente, getListCliente } from "@/action/cliente/clienteAction";
+import { useClienteStore } from "@/store/clienteStore";
 import { usePuntoVentaStore } from "@/store/puntoVentaStore";
-import data from "@/views/demos/forms/tables/data-table/datatable";
+import FormClient from "./form/FormClient.vue";
 
 const isDialogVisible = ref(false);
 const puntoVentaStore = usePuntoVentaStore();
+const clienteStore = useClienteStore();
 
 const editDialog = ref(false);
 const deleteDialog = ref(false);
@@ -34,63 +37,41 @@ const options = ref({
   sortDesc: [false],
 })
 
-// status options
-const selectedOptions = [
-  {
-    text: "Current",
-    value: 1,
-  },
-  {
-    text: "Professional",
-    value: 2,
-  },
-  {
-    text: "Rejected",
-    value: 3,
-  },
-  {
-    text: "Resigned",
-    value: 4,
-  },
-  {
-    text: "Applied",
-    value: 5,
-  },
-];
+const search = ref('')
 
 // headers
 const headers = [
   {
     title: "Nombre",
-    key: "fullName",
+    key: "nombre_apellido",
   },
   {
     title: "Tipo Doc.",
-    key: "email",
+    key: "tipo_documento",
   },
   {
     title: "Numero Doc.",
-    key: "startDate",
+    key: "numero_documento",
   },
   {
     title: "Email",
-    key: "salary",
+    key: "email",
   },
   {
     title: "Dirección",
-    key: "age",
+    key: "direccion",
   },
   {
     title: "Teléfono",
-    key: "age",
+    key: "telefono",
   },
   {
     title: "Deuda",
-    key: "age",
+    key: "deuda",
   },
   {
     title: "Estado",
-    key: "status",
+    key: "estado",
   },
   {
     title: "Acciones",
@@ -126,17 +107,32 @@ const resolveStatusVariant = (status) => {
     };
 };
 
+
+const getListClientes = async () => {
+  try {
+    puntoVentaStore.loaderMain = true;
+    const { clientes } = await getListCliente();
+    console.log(clientes);
+    userList.value = clientes
+    puntoVentaStore.loaderMain = false;
+  } catch (error) {
+    console.error(error);
+    throw error; // Propaga el error para que se maneje en la llamada a la función
+  }
+}
+
 const editItem = (item) => {
-  editedIndex.value = userList.value.indexOf(item);
-  editedItem.value = { ...item };
-  editDialog.value = true;
+  clienteStore.selectClientEdit = item
 };
 
-const addCliente = ()=>{
-  editDialog.value = true;
+const addCliente = () => {
+  console.log("hola");
+  clienteStore.modalClienteForm = true
 }
 
 const deleteItem = (item) => {
+  console.log(item);
+
   editedIndex.value = userList.value.indexOf(item);
   editedItem.value = { ...item };
   deleteDialog.value = true;
@@ -144,30 +140,35 @@ const deleteItem = (item) => {
 
 const close = () => {
   editDialog.value = false;
-  editedIndex.value = -1;
-  editedItem.value = { ...defaultItem.value };
+  // editedIndex.value = -1;
+  // editedItem.value = { ...defaultItem.value };
 };
 
 const closeDelete = () => {
   deleteDialog.value = false;
-  editedIndex.value = -1;
-  editedItem.value = { ...defaultItem.value };
+  // editedIndex.value = -1;
+  // editedItem.value = { ...defaultItem.value };
 };
 
-const save = () => {
-  if (editedIndex.value > -1)
-    Object.assign(userList.value[editedIndex.value], editedItem.value);
-  else userList.value.push(editedItem.value);
-  close();
-};
+// const save = () => {
+//   if (editedIndex.value > -1)
+//     Object.assign(userList.value[editedIndex.value], editedItem.value);
+//   else userList.value.push(editedItem.value);
+//   close();
+// };
 
-const deleteItemConfirm = () => {
+const deleteItemConfirm = async () => {
   userList.value.splice(editedIndex.value, 1);
   closeDelete();
+  console.log(editedItem.value);
+  const resp = await deleteCliente(editedItem.value.id)
+  puntoVentaStore.TextsModalAlertVisible = true;
+  puntoVentaStore.TextsModalAlert = resp.success;
+  // clienteStore.freshListCliente = true;
 };
 
 onMounted(() => {
-  userList.value = JSON.parse(JSON.stringify(data));
+  // userList.value = JSON.parse(JSON.stringify(data));
 });
 
 watch(
@@ -179,86 +180,74 @@ watch(
   { immediate: true }
 );
 
+//Refrescar el listado de clientes
+watch(
+  () => [clienteStore.freshListCliente],
+  async ([value]) => {
+    if (value) {
+      await getListClientes();
+    }
+    clienteStore.freshListCliente = false;
+  },
+  { immediate: true }
+);
+
 watch(isDialogVisible, async (newValue) => {
-  // console.log(newValue);
-  if (!newValue) {
+  console.log(newValue);
+
+  if (newValue) {
+    await getListClientes();
+  } else {
     puntoVentaStore.modalModuleCliente = newValue;
   }
 });
 </script>
 
 <template>
-  <VDialog
-    v-model="isDialogVisible"
-    fullscreen
-    :scrim="false"
-    transition="dialog-bottom-transition"
-  >
+  <VDialog v-model="isDialogVisible" fullscreen :scrim="false" transition="dialog-bottom-transition">
     <!-- Dialog Content -->
     <VCard>
       <!-- Toolbar -->
       <div>
-        <VToolbar  color="secondary">
+        <VToolbar color="secondary">
           <VToolbarItems>
             <VBtn @click="addCliente" variant="text">
               <VIcon start icon="bx-male" />Agregar Cliente
             </VBtn>
             <VBtn variant="text" @click="isDialogVisible = false">
-              <VIcon start icon="bx-import"
-            /></VBtn>
+              <VIcon start icon="bx-import" />
+            </VBtn>
           </VToolbarItems>
-          <VCardTitle class="text-white"
-            >Deudas por cobrar:
-            <span class="text-secundary">$ 12000</span></VCardTitle
-          >
+          <VCardTitle class="text-white">Deudas por cobrar:
+            <span class="text-secundary">$ 12000</span>
+          </VCardTitle>
           <VSpacer />
-          <AppTextField
-            color="white"
-            class="inut-fondo"
-            prepend-inner-icon="bx-search-alt-2"
-            placeholder="Buscar Cliente"
-          />
-          <VBtn
-            icon
-            variant="plain"
-            class="ms-5"
-            @click="isDialogVisible = false"
-          >
+          <AppTextField color="white" class="inut-fondo" prepend-inner-icon="bx-search-alt-2"
+            placeholder="Buscar Cliente" v-model="search" />
+          <VBtn icon variant="plain" class="ms-5" @click="isDialogVisible = false">
             <VIcon color="white" icon="bx-x" />
           </VBtn>
         </VToolbar>
       </div>
       <!-- 👉 Datatable  -->
-      <VDataTable
-        height="750"
-        fixed-header
-        hover="true"
-        :headers="headers"
-        :items="userList"
-        :items-per-page="options.itemsPerPage"
-        :page="options.page"
-        :options="options"
-      >
+      <VDataTable height="750" :search="search" :loading="puntoVentaStore.loaderMain" fixed-header :hover="true"
+        :headers="headers" :items="userList" :items-per-page="options.itemsPerPage" :page="options.page"
+        :options="options">
         <!-- full name -->
-        <template #item.fullName="{ item }">
+        <template #item.nombre_apellido="{ item }">
           <div class="d-flex align-center">
             <!-- avatar -->
-            <VAvatar
-              size="32"
-              :color="item.avatar ? '' : 'primary'"
+            <VAvatar size="32" :color="item.avatar ? '' : 'primary'"
               :class="item.avatar ? '' : 'v-avatar-light-bg primary--text'"
-              :variant="!item.avatar ? 'tonal' : undefined"
-            >
+              :variant="!item.avatar ? 'tonal' : undefined">
               <VImg v-if="item.avatar" :src="item.avatar" />
-              <span v-else>{{ avatarText(item.fullName) }}</span>
+              <span v-else>{{ avatarText(item.nombre_apellido) }}</span>
             </VAvatar>
 
             <div class="d-flex flex-column ms-3">
-              <span
-                class="d-block font-weight-medium text-high-emphasis text-truncate"
-                >{{ item.fullName }}</span
-              >
-              <small>{{ item.post }}</small>
+              <span class="d-block font-weight-medium text-high-emphasis text-truncate">{{ item.nombre_apellido
+                }}</span>
+              <small>{{ item.email }}</small>
             </div>
           </div>
         </template>
@@ -282,93 +271,19 @@ watch(isDialogVisible, async (newValue) => {
           </div>
         </template>
         <template #bottom>
-        <VCardText class="pt-2">
-          <div class="d-flex flex-wrap justify-center justify-sm-space-between gap-y-2 mt-2">
-            <VSelect
-              v-model="options.itemsPerPage"
-              :items="[10,20, 30, 50, 100]"
-              label="Rows per page:"
-              variant="underlined"
-              style="max-inline-size: 8rem;min-inline-size: 5rem;"
-            />
+          <VCardText class="pt-2">
+            <div class="d-flex flex-wrap justify-center justify-sm-space-between gap-y-2 mt-2">
+              <VSelect v-model="options.itemsPerPage" :items="[10, 20, 30, 50, 100]" label="Rows per page:"
+                variant="underlined" style="max-inline-size: 8rem;min-inline-size: 5rem;" />
 
-            <VPagination
-              v-model="options.page"
-              :total-visible="$vuetify.display.smAndDown ? 2 : 5"
-              :length="Math.ceil(userList.length / options.itemsPerPage)"
-            />
-          </div>
-        </VCardText>
+              <VPagination v-model="options.page" :total-visible="$vuetify.display.smAndDown ? 2 : 5"
+                :length="Math.ceil(userList.length / options.itemsPerPage)" />
+            </div>
+          </VCardText>
         </template>
       </VDataTable>
 
-      <!-- 👉 Edit Dialog  -->
-      <VDialog v-model="editDialog" max-width="600px">
-        <VCard title="Editar Cliente">
-          <VCardText>
-            <div class="text-body-1 mb-6">
-              Name: <span class="text-h6">{{ editedItem?.fullName }}</span>
-            </div>
-            <VRow>
-              <!-- fullName -->
-              <VCol cols="12" sm="6">
-                <AppTextField v-model="editedItem.fullName" label="User name" />
-              </VCol>
-
-              <!-- email -->
-              <VCol cols="12" sm="6">
-                <AppTextField v-model="editedItem.email" label="Email" />
-              </VCol>
-
-              <!-- salary -->
-              <VCol cols="12" sm="6">
-                <AppTextField
-                  v-model="editedItem.salary"
-                  label="Salary"
-                  prefix="$"
-                  type="number"
-                />
-              </VCol>
-
-              <!-- age -->
-              <VCol cols="12" sm="6">
-                <AppTextField
-                  v-model="editedItem.age"
-                  label="Age"
-                  type="number"
-                />
-              </VCol>
-
-              <!-- start date -->
-              <VCol cols="12" sm="6">
-                <AppTextField v-model="editedItem.startDate" label="Date" />
-              </VCol>
-
-              <!-- status -->
-              <VCol cols="12" sm="6">
-                <AppSelect
-                  v-model="editedItem.status"
-                  :items="selectedOptions"
-                  item-title="text"
-                  item-value="value"
-                  label="Standard"
-                />
-              </VCol>
-            </VRow>
-          </VCardText>
-
-          <VCardText>
-            <div class="self-align-end d-flex gap-4 justify-end">
-              <VBtn color="error" variant="outlined" @click="close">
-                Cancel
-              </VBtn>
-              <VBtn color="success" variant="elevated" @click="save">
-                Save
-              </VBtn>
-            </div>
-          </VCardText>
-        </VCard>
-      </VDialog>
+      <FormClient />
 
       <!-- 👉 Delete Dialog  -->
       <VDialog v-model="deleteDialog" max-width="500px">
@@ -378,11 +293,7 @@ watch(isDialogVisible, async (newValue) => {
               <VBtn color="error" variant="outlined" @click="closeDelete">
                 Cancel
               </VBtn>
-              <VBtn
-                color="success"
-                variant="elevated"
-                @click="deleteItemConfirm"
-              >
+              <VBtn color="success" variant="elevated" @click="deleteItemConfirm">
                 OK
               </VBtn>
             </div>
@@ -398,8 +309,9 @@ watch(isDialogVisible, async (newValue) => {
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
 }
+
 .inut-fondo {
-  background: aliceblue;
   border-radius: 6px;
+  background: aliceblue;
 }
 </style>

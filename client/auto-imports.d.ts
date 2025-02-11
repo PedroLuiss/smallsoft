@@ -43,12 +43,14 @@ declare global {
   const defineComponent: typeof import('vue')['defineComponent']
   const definePage: typeof import('unplugin-vue-router/runtime')['definePage']
   const defineStore: typeof import('pinia')['defineStore']
+  const del: typeof import('./src/utils/sendApiNeo.js')['del']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
   const emailValidator: typeof import('./src/@core/utils/validators.js')['emailValidator']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const formatDate: typeof import('./src/@core/utils/formatters.js')['formatDate']
   const formatDateToMonthShort: typeof import('./src/@core/utils/formatters.js')['formatDateToMonthShort']
+  const get: typeof import('./src/utils/sendApiNeo.js')['get']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
@@ -70,6 +72,7 @@ declare global {
   const isToday: typeof import('./src/@core/utils/helpers.js')['isToday']
   const kFormatter: typeof import('./src/@core/utils/formatters.js')['kFormatter']
   const lengthValidator: typeof import('./src/@core/utils/validators.js')['lengthValidator']
+  const linkApi: typeof import('./src/utils/sendApiNeo.js')['linkApi']
   const logicAnd: typeof import('@vueuse/math')['logicAnd']
   const logicNot: typeof import('@vueuse/math')['logicNot']
   const logicOr: typeof import('@vueuse/math')['logicOr']
@@ -103,9 +106,11 @@ declare global {
   const paginationMeta: typeof import('./src/utils/paginationMeta.js')['paginationMeta']
   const passwordValidator: typeof import('./src/@core/utils/validators.js')['passwordValidator']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
+  const post: typeof import('./src/utils/sendApiNeo.js')['post']
   const prefixWithPlus: typeof import('./src/@core/utils/formatters.js')['prefixWithPlus']
   const provide: typeof import('vue')['provide']
   const provideLocal: typeof import('@vueuse/core')['provideLocal']
+  const put: typeof import('./src/utils/sendApiNeo.js')['put']
   const reactify: typeof import('@vueuse/core')['reactify']
   const reactifyObject: typeof import('@vueuse/core')['reactifyObject']
   const reactive: typeof import('vue')['reactive']
@@ -398,12 +403,14 @@ declare module 'vue' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly del: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['del']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators.js')['emailValidator']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['formatDate']>
     readonly formatDateToMonthShort: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['formatDateToMonthShort']>
+    readonly get: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['get']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -425,6 +432,7 @@ declare module 'vue' {
     readonly isToday: UnwrapRef<typeof import('./src/@core/utils/helpers.js')['isToday']>
     readonly kFormatter: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['kFormatter']>
     readonly lengthValidator: UnwrapRef<typeof import('./src/@core/utils/validators.js')['lengthValidator']>
+    readonly linkApi: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['linkApi']>
     readonly logicAnd: UnwrapRef<typeof import('@vueuse/math')['logicAnd']>
     readonly logicNot: UnwrapRef<typeof import('@vueuse/math')['logicNot']>
     readonly logicOr: UnwrapRef<typeof import('@vueuse/math')['logicOr']>
@@ -458,9 +466,11 @@ declare module 'vue' {
     readonly paginationMeta: UnwrapRef<typeof import('./src/utils/paginationMeta.js')['paginationMeta']>
     readonly passwordValidator: UnwrapRef<typeof import('./src/@core/utils/validators.js')['passwordValidator']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly post: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['post']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['prefixWithPlus']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
+    readonly put: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['put']>
     readonly reactify: UnwrapRef<typeof import('@vueuse/core')['reactify']>
     readonly reactifyObject: UnwrapRef<typeof import('@vueuse/core')['reactifyObject']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
@@ -746,12 +756,14 @@ declare module '@vue/runtime-core' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly del: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['del']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators.js')['emailValidator']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['formatDate']>
     readonly formatDateToMonthShort: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['formatDateToMonthShort']>
+    readonly get: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['get']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -773,6 +785,7 @@ declare module '@vue/runtime-core' {
     readonly isToday: UnwrapRef<typeof import('./src/@core/utils/helpers.js')['isToday']>
     readonly kFormatter: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['kFormatter']>
     readonly lengthValidator: UnwrapRef<typeof import('./src/@core/utils/validators.js')['lengthValidator']>
+    readonly linkApi: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['linkApi']>
     readonly logicAnd: UnwrapRef<typeof import('@vueuse/math')['logicAnd']>
     readonly logicNot: UnwrapRef<typeof import('@vueuse/math')['logicNot']>
     readonly logicOr: UnwrapRef<typeof import('@vueuse/math')['logicOr']>
@@ -806,9 +819,11 @@ declare module '@vue/runtime-core' {
     readonly paginationMeta: UnwrapRef<typeof import('./src/utils/paginationMeta.js')['paginationMeta']>
     readonly passwordValidator: UnwrapRef<typeof import('./src/@core/utils/validators.js')['passwordValidator']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly post: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['post']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters.js')['prefixWithPlus']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
+    readonly put: UnwrapRef<typeof import('./src/utils/sendApiNeo.js')['put']>
     readonly reactify: UnwrapRef<typeof import('@vueuse/core')['reactify']>
     readonly reactifyObject: UnwrapRef<typeof import('@vueuse/core')['reactifyObject']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>

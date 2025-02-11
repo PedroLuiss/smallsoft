@@ -10,13 +10,17 @@ class Cliente extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'identificacion',
-        'telefono',
-        'person_contact',
-        'correo',
-        'pais',
+        'nombre_apellido',
+        'tipo_documento',
+        'numero_documento',
+        'email',
         'direccion',
-        'otros'
+        'telefono',
+        'deuda',
+        'estado'
     ];
+
+    public static function deudaTotal() : float {
+        return self::where('estado', true)->sum('deuda');
+    }
 }

@@ -353,6 +353,11 @@
     "watchThrottled": true,
     "watchTriggerable": true,
     "watchWithFilter": true,
-    "whenever": true
+    "whenever": true,
+    "del": true,
+    "get": true,
+    "linkApi": true,
+    "post": true,
+    "put": true
   }
 }

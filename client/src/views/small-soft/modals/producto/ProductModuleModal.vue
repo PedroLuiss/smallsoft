@@ -1,5 +1,6 @@
 <script setup>
 import { usePuntoVentaStore } from "@/store/puntoVentaStore";
+import CategoriaModal from "./modal/categoria/CategoriaModal.vue";
 
 const isDialogVisible = ref(false);
 const puntoVentaStore = usePuntoVentaStore();
@@ -218,6 +219,13 @@ const closeDelete = () => {
 
 //**********************************Tabla producto**********************************
 
+
+const viewsModalCategoria = () => {
+  console.log("holaa");
+
+  puntoVentaStore.modalCategoriaViews = true;
+};
+
 watch(
   () => [puntoVentaStore.modalModuleProducto],
   async ([value]) => {
@@ -228,7 +236,7 @@ watch(
 );
 
 watch(isDialogVisible, async (newValue) => {
-  // console.log(newValue);
+  console.log(newValue);
   if (!newValue) {
     puntoVentaStore.modalModuleProducto = newValue;
   }
@@ -236,77 +244,48 @@ watch(isDialogVisible, async (newValue) => {
 </script>
 
 <template>
-  <VDialog
-    v-model="isDialogVisible"
-    fullscreen
-    :scrim="false"
-    transition="dialog-bottom-transition"
-  >
+  <VDialog v-model="isDialogVisible" fullscreen :scrim="false" transition="dialog-bottom-transition">
     <!-- Dialog Content -->
     <VCard>
       <!-- Toolbar -->
       <div>
         <VToolbar color="secondary">
           <VToolbarItems>
-            <VBtn @click="addCliente" variant="text">
+            <VBtn @click="viewsModalCategoria" variant="text">
               <VIcon start icon="bx-store" />Categoria
             </VBtn>
             <VBtn @click="addCliente" variant="text">
               <VIcon start icon="bx-purchase-tag-alt" />Agregar Producto
             </VBtn>
             <VBtn variant="text" @click="isDialogVisible = false">
-              <VIcon start icon="bx-import" /> Importar</VBtn
-            >
+              <VIcon start icon="bx-import" /> Importar
+            </VBtn>
             <VBtn variant="text" @click="isDialogVisible = false">
               <VIcon start icon="bx-receipt" />
             </VBtn>
           </VToolbarItems>
 
           <VSpacer />
-          <AppTextField
-            color="white"
-            class="inut-fondo"
-            prepend-inner-icon="bx-search-alt-2"
-            placeholder="Buscar Producto"
-          />
-          <VBtn
-            icon
-            variant="plain"
-            class="ms-5"
-            @click="isDialogVisible = false"
-          >
+          <AppTextField color="white" class="inut-fondo" prepend-inner-icon="bx-search-alt-2"
+            placeholder="Buscar Producto" />
+          <VBtn icon variant="plain" class="ms-5" @click="isDialogVisible = false">
             <VIcon color="white" icon="bx-x" />
           </VBtn>
         </VToolbar>
       </div>
       <!-- 👉 products -->
       <!-- 👉 Datatable  -->
-      <VDataTableServer
-        :headers="headers"
-        height="750"
-        fixed-header
-        hover="true"
-        :items="products"
-        class="text-no-wrap"
-        @update:options="updateOptions"
-        :items-per-page="options.itemsPerPage"
-        :page="options.page"
-        :options="options"
-      >
+      <VDataTableServer :headers="headers" height="750" fixed-header :hover="true" density="compact" :items="products"
+        class="text-no-wrap" @update:options="updateOptions" :items-per-page="options.itemsPerPage" :page="options.page"
+        :options="options">
         <!-- product  -->
         <template #item.product="{ item }">
           <div class="d-flex align-center gap-x-4">
-            <VAvatar
-              v-if="item.image"
-              size="38"
-              variant="tonal"
-              rounded
-              :image="item.image"
-            />
+            <VAvatar v-if="item.image" size="38" variant="tonal" rounded :image="item.image" />
             <div class="d-flex flex-column">
               <span class="text-body-1 font-weight-medium text-high-emphasis">{{
                 item.productName
-              }}</span>
+                }}</span>
               <span class="text-body-2">{{ item.productBrand }}</span>
             </div>
           </div>
@@ -314,17 +293,12 @@ watch(isDialogVisible, async (newValue) => {
 
         <!-- category -->
         <template #item.category="{ item }">
-          <VAvatar
-            size="30"
-            variant="tonal"
-            :color="resolveCategory(item.category)?.color"
-            class="me-4"
-          >
+          <VAvatar size="30" variant="tonal" :color="resolveCategory(item.category)?.color" class="me-4">
             <VIcon :icon="resolveCategory(item.category)?.icon" size="18" />
           </VAvatar>
           <span class="text-body-1 text-high-emphasis">{{
             item.category
-          }}</span>
+            }}</span>
         </template>
 
         <!-- stock -->
@@ -334,12 +308,7 @@ watch(isDialogVisible, async (newValue) => {
 
         <!-- status -->
         <template #item.status="{ item }">
-          <VChip
-            v-bind="resolveStatus(item.status)"
-            density="default"
-            label
-            size="small"
-          />
+          <VChip v-bind="resolveStatus(item.status)" density="default" label size="small" />
         </template>
 
         <!-- Actions -->
@@ -356,11 +325,7 @@ watch(isDialogVisible, async (newValue) => {
                   Download
                 </VListItem>
 
-                <VListItem
-                  value="delete"
-                  prepend-icon="bx-trash"
-                  @click="deleteProduct(item.id)"
-                >
+                <VListItem value="delete" prepend-icon="bx-trash" @click="deleteProduct(item.id)">
                   Delete
                 </VListItem>
 
@@ -375,44 +340,20 @@ watch(isDialogVisible, async (newValue) => {
         <!-- pagination -->
         <template #bottom>
           <VCardText class="pt-2">
-            <div
-              class="d-flex flex-wrap justify-center justify-sm-space-between gap-y-2 mt-2"
-            >
+            <div class="d-flex flex-wrap justify-center justify-sm-space-between gap-y-2 mt-2">
               <div class="d-flex">
-                <VSelect
-                  width="300"
-                  v-model="options.itemsPerPage"
-                  :items="[10, 20, 30, 50, 100]"
-                  label="Filas por páginas:"
-                  variant="underlined"
-                  style="max-inline-size: 8rem; min-inline-size: 5rem"
-                />
-                <VSelect
-                  width="200"
-                  class="ms-10"
-                  v-model="options.itemsPerPage"
-                  :items="[10, 20, 30, 50, 100]"
-                  label="Categorias:"
-                  variant="underlined"
-                  style="max-inline-size: 8rem; min-inline-size: 5rem"
-                />
+                <VSelect width="300" v-model="options.itemsPerPage" :items="[10, 20, 30, 50, 100]"
+                  label="Filas por páginas:" variant="underlined"
+                  style="max-inline-size: 8rem; min-inline-size: 5rem;" />
+                <VSelect width="200" class="ms-10" v-model="options.itemsPerPage" :items="[10, 20, 30, 50, 100]"
+                  label="Categorias:" variant="underlined" style="max-inline-size: 8rem; min-inline-size: 5rem;" />
 
-                <VSelect
-                  width="200"
-                  class="ms-10"
-                  v-model="options.itemsPerPage"
-                  :items="[10, 20, 30, 50, 100]"
-                  label="Estado:"
-                  variant="underlined"
-                  style="max-inline-size: 8rem; min-inline-size: 5rem"
-                />
+                <VSelect width="200" class="ms-10" v-model="options.itemsPerPage" :items="[10, 20, 30, 50, 100]"
+                  label="Estado:" variant="underlined" style="max-inline-size: 8rem; min-inline-size: 5rem;" />
               </div>
 
-              <VPagination
-                v-model="options.page"
-                :total-visible="$vuetify.display.smAndDown ? 2 : 5"
-                :length="Math.ceil(totalProduct / options.itemsPerPage)"
-              />
+              <VPagination v-model="options.page" :total-visible="$vuetify.display.smAndDown ? 2 : 5"
+                :length="Math.ceil(totalProduct / options.itemsPerPage)" />
             </div>
           </VCardText>
         </template>
@@ -433,41 +374,27 @@ watch(isDialogVisible, async (newValue) => {
 
               <!-- email -->
               <VCol cols="12" sm="6">
-                <AppTextField  label="Email" />
+                <AppTextField label="Email" />
               </VCol>
 
               <!-- salary -->
               <VCol cols="12" sm="6">
-                <AppTextField
-                
-                  label="Salary"
-                  prefix="$"
-                  type="number"
-                />
+                <AppTextField label="Salary" prefix="$" type="number" />
               </VCol>
 
               <!-- age -->
               <VCol cols="12" sm="6">
-                <AppTextField
-                 
-                  label="Age"
-                  type="number"
-                />
+                <AppTextField label="Age" type="number" />
               </VCol>
 
               <!-- start date -->
               <VCol cols="12" sm="6">
-                <AppTextField  label="Date" />
+                <AppTextField label="Date" />
               </VCol>
 
               <!-- status -->
               <VCol cols="12" sm="6">
-                <AppSelect
-                 
-                  item-title="text"
-                  item-value="value"
-                  label="Standard"
-                />
+                <AppSelect item-title="text" item-value="value" label="Standard" />
               </VCol>
             </VRow>
           </VCardText>
@@ -493,17 +420,17 @@ watch(isDialogVisible, async (newValue) => {
               <VBtn color="error" variant="outlined" @click="closeDelete">
                 Cancel
               </VBtn>
-              <VBtn
-                color="success"
-                variant="elevated"
-                @click="deleteItemConfirm"
-              >
+              <VBtn color="success" variant="elevated" @click="deleteItemConfirm">
                 OK
               </VBtn>
             </div>
           </VCardText>
         </VCard>
       </VDialog>
+
+
+      <!-- 👉 Modal de categoria  -->
+      <CategoriaModal />
     </VCard>
   </VDialog>
 </template>
@@ -513,8 +440,9 @@ watch(isDialogVisible, async (newValue) => {
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
 }
+
 .inut-fondo {
-  background: aliceblue;
   border-radius: 6px;
+  background: aliceblue;
 }
 </style>

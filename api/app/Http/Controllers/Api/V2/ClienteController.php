@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api\V2;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\cliente\StoreClienteReques;
 use App\Models\Cliente;
@@ -14,26 +15,29 @@ class ClienteController extends Controller
 
     public function list_client()
     {
-        return response(Cliente::all());
+        $data = Cliente::where('estado', true)
+            ->orderByDesc('created_at')->get();
+        $respData = [
+            "deuda_total" => Cliente::deudaTotal(),
+            "clientes" => $data
+        ];
+
+        return response($respData);
     }
 
     public function edit($id)
     {
-        $data = Cliente::where('id',$id)->first();
+        $data = Cliente::where('id', $id)->first();
         return response($data);
     }
 
 
     public function store(StoreClienteReques $request)
     {
-        if ($request->id)
-        {
+        if ($request->id) {
             $model = Cliente::findOrFail($request->id);
             $accion = "Editado";
-
-        }
-        else
-        {
+        } else {
             $model = new Cliente;
             $accion = " Creado";
         }
@@ -41,7 +45,7 @@ class ClienteController extends Controller
         $model->fill($request->all());
         $model->save();
 
-        return response()->json(['message' => "Cliente {$accion} correctamente"],201);
+        return response()->json(['message' => "Cliente {$accion} correctamente", "return" => true], 201);
     }
 
     public function delete_client(Request $request)
@@ -52,8 +56,8 @@ class ClienteController extends Controller
         //         die;
         //     }
 
-        Cliente::where('id',$request['id'])->delete();
-        return response()->json(['success' => 'Cliente Eliminado Correctamente.','status' => 200,], 201);
+        Cliente::where('id', $request['id'])->delete();
+        return response()->json(['success' => 'Cliente Eliminado Correctamente.', 'status' => 200,], 201);
         // }
 
     }

@@ -24,7 +24,7 @@ use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
 |
 */
 
-Route::prefix('v2')->middleware('json.api')->group(function () {
+Route::middleware('json.api')->group(function () {
     Route::post('/login', LoginController::class)->name('login');
     Route::post('/logout', LogoutController::class)->middleware('auth:api');
     Route::post('/register', RegisterController::class);
@@ -41,11 +41,11 @@ Route::prefix('v2')->middleware('json.api')->group(function () {
 
 
 
-Route::prefix('v2')->middleware(['auth:api','json.api'])->group(function () {
+// Route::middleware(['auth:api','json.api'])->group(function () {
     /**----------------------------------------------------Cliente---------------------------------------------------- */
-        Route::get('/cliente/list', [ClienteController::class, 'list_client'])->name('cliente.listcliente');
-        Route::get('/cliente/edit/{id}', [ClienteController::class, 'edit'])->name('cliente.editcliente');
-        Route::delete('/cliente/delet/{id}', [ClienteController::class, 'delete_client'])->name('cliente.deletcliente');
-        Route::post('/clientes/store', [ClienteController::class, 'store'])->name('cliente.store');
+        Route::get('cliente/list', [ClienteController::class, 'list_client'])->name('cliente.listcliente');
+        Route::get('cliente/edit/{id}', [ClienteController::class, 'edit'])->name('cliente.editcliente');
+        Route::delete('cliente/delet/{id}', [ClienteController::class, 'delete_client'])->name('cliente.deletcliente');
+        Route::post('clientes/store', [ClienteController::class, 'store'])->name('cliente.store');
     /**----------------------------------------------------Cliente---------------------------------------------------- */
-});
+// });

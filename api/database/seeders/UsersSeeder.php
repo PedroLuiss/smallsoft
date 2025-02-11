@@ -23,8 +23,11 @@ class UsersSeeder extends Seeder
 
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@jsonapi.com',
-            'password' => 'secret'
+            'usuario' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => 'admin123'
         ]);
+
+
     }
 }

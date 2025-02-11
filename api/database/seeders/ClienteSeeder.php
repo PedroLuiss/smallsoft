@@ -15,36 +15,22 @@ class ClienteSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ 'name' => 'Cliente 1',
-              'identificacion'=> 'id-1580513',
-              'telefono'=> '+5829653265256',
-              'person_contact'=> '+49132185256',
-              'correo'=>"Cliente1@gmail.com",
-              'pais'=>"Venezuela",
-              'otros'=>"Example",
-              'direccion'=>"Direccion1 y direccion2",
-              'created_at'=>date("Y-m-d H:i:s"),
-              'updated_at'=>date("Y-m-d H:i:s")
-            ],[ 'name' => 'Cliente 2',
-                'identificacion'=> 'id-1580513',
-                'telefono'=> '+5829653265256',
-                'person_contact'=> '+49132185256',
-                'correo'=>"Cliente2@gmail.com",
-                'pais'=>"Venezuela",
-                'otros'=>"Example",
-                'direccion'=>"Direccion1 y direccion2",
-                'created_at'=>date("Y-m-d H:i:s"),
-                'updated_at'=>date("Y-m-d H:i:s")
-            ],[ 'name' => 'Cliente 3',
-                'identificacion'=> 'id-1580513',
-                'telefono'=> '+5829653265256',
-                'person_contact'=> '+49132185256',
-                'correo'=>"Cliente3@gmail.com",
-                'pais'=>"Venezuela",
-                'otros'=>"Example",
-                'direccion'=>"Direccion1 y direccion2",
-                'created_at'=>date("Y-m-d H:i:s"),
-                'updated_at'=>date("Y-m-d H:i:s")
+            [ 'nombre_apellido' => 'Cliente 1',
+                'tipo_documento'=> 'CI',
+                'numero_documento'=> '45581215',
+                'email'=> 'Cliente1@gmail.com',
+                'direccion'=>"asdksnmdklm ks kmdklñs",
+                'telefono'=>"150515055",
+                'deuda'=>0,
+                'estado'=>1,
+            ],[ 'nombre_apellido' => 'Cliente 2',
+                'tipo_documento'=> 'CI',
+                'numero_documento'=> '2434345',
+                'email'=> 'Cliente2@gmail.com',
+                'direccion'=>"asdksnmdklm ks kmdklñs",
+                'telefono'=>"150515055",
+                'deuda'=>0,
+                'estado'=>1,
             ]
 
         ];

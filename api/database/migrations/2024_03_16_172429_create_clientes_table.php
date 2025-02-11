@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('identificacion');
-            $table->string('telefono');
-            $table->string('person_contact');
-            $table->string('correo');
-            $table->string('pais');
-            $table->string('otros')->nullable();
+            $table->string('nombre_apellido')->nullable();
+            $table->string('tipo_documento')->nullable();
+            $table->string('numero_documento')->nullable();
+            $table->string('email')->nullable();
             $table->text('direccion')->nullable();
+            $table->string('telefono')->nullable();
+            $table->float('deuda',8,2)->default(0.00);
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }

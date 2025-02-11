@@ -11,8 +11,8 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
     title: 'sneat',
     logo: h('div', { innerHTML: logo, style: 'line-height:0; color: rgb(var(--v-global-theme-primary))' }),
-    contentWidth: ContentWidth.Boxed,
-    contentLayoutNav: AppContentLayoutNav.Vertical,
+    contentWidth: ContentWidth.Fluid,
+    contentLayoutNav: AppContentLayoutNav.Horizontal,
     overlayNavFromBreakpoint: breakpointsVuetifyV3.lg - 1, // 1 for matching with vuetify breakpoint. Docs: https://next.vuetifyjs.com/en/features/display-and-platform/
     i18n: {
       enable: true,
@@ -35,7 +35,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
         },
       ],
     },
-    theme: 'system',
+    theme: 'light',
     skin: Skins.Default,
     iconRenderer: VIcon,
   },

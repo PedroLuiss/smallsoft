@@ -16,7 +16,15 @@ export const usePuntoVentaStore = defineStore('puntoVentaStore', {
     modalHistorialVentas:false,
     modalBuscarProductos:false,
     modalBuscarCLientes:false,
-    modalCalculadora:false
+    modalCalculadora:false,
+    modalCategoriaViews:false,
+
+
+
+    loaderMain:false,
+    viewsModalAlert:false,
+    TextsModalAlert:null,
+    TextsModalAlertVisible:false
 
   }),
   actions: {
